@@ -2,17 +2,27 @@
 
 import Button from "@/app/_components/Button";
 import Input from "@/app/_components/Inputs/Input";
-import React from "react";
-import { FieldValues, useForm, SubmitHandler } from "react-hook-form";
-import AuthSocialButton from "./AuthSocialButton";
-import { BsGithub, BsGoogle, BsFacebook } from "react-icons/bs";
 import axios, { AxiosError } from "axios";
+import { signIn, useSession } from "next-auth/react";
+import React from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { signIn } from "next-auth/react";
+import { FaGithubSquare } from "react-icons/fa";
+import AuthSocialButton from "./AuthSocialButton";
+import { useRouter } from "next/navigation";
 
 type VariantType = "LOGIN" | "REGISTER";
 
+export interface UseFormInputs {
+  name: string;
+  email: string;
+  password: string;
+}
+
 const AuthForm = () => {
+  const session = useSession();
+  const router = useRouter();
+
   const [variant, setVariant] = React.useState<VariantType>("LOGIN");
   const [isLoading, setIsLoading] = React.useState(false);
 
@@ -24,7 +34,7 @@ const AuthForm = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FieldValues>({
+  } = useForm<UseFormInputs>({
     defaultValues: {
       name: "",
       email: "",
@@ -32,7 +42,7 @@ const AuthForm = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+  const onSubmit: SubmitHandler<UseFormInputs> = (data) => {
     setIsLoading(true);
     if (variant === "REGISTER") {
       axios
@@ -40,6 +50,10 @@ const AuthForm = () => {
         .then((res) => {
           if (res.status === 200) {
             toast.success("User Created Successfully");
+            signIn("credentials", {
+              ...data,
+              redirect: false,
+            });
           }
         })
         .catch((err: AxiosError) => {
@@ -62,7 +76,9 @@ const AuthForm = () => {
             toast.success("Logging");
           }
         })
-        .finally(() => setIsLoading(false));
+        .finally(() => {
+          setIsLoading(false);
+        });
     }
   };
 
@@ -79,6 +95,12 @@ const AuthForm = () => {
       })
       .finally(() => setIsLoading(false));
   };
+
+  React.useEffect(() => {
+    if (session?.status === "authenticated") {
+      router.push("/users");
+    }
+  }, [router, session?.status]);
 
   return (
     <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
@@ -132,15 +154,15 @@ const AuthForm = () => {
 
           <div className="mt-6 flex gap-2">
             <AuthSocialButton
-              icon={BsGithub}
+              icon={FaGithubSquare}
               onclick={() => socialActions("github")}
             />
             <AuthSocialButton
-              icon={BsGoogle}
+              icon={"/images/google.png"}
               onclick={() => socialActions("google")}
             />
             <AuthSocialButton
-              icon={BsFacebook}
+              icon={"/images/facebook.png"}
               onclick={() => socialActions("facebook")}
             />
           </div>

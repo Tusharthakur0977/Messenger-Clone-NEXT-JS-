@@ -1,15 +1,16 @@
 "use client";
 
+import { UseFormInputs } from "@/app/(site)/_components/AuthForm";
 import clsx from "clsx";
 import React from "react";
 import { FieldErrors, FieldValues, UseFormRegister } from "react-hook-form";
 
 interface IInputProps {
   label: string;
-  id: string;
+  id: "email" | "name" | "password";
   type?: string;
   required?: boolean;
-  register: UseFormRegister<FieldValues>;
+  register: UseFormRegister<UseFormInputs>;
   errors: FieldErrors;
   disabled?: boolean;
 }
