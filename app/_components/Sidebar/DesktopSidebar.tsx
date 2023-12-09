@@ -4,14 +4,21 @@ import useConversation from "@/app/hooks/useConversation";
 import useRoutes from "@/app/hooks/useRoutes";
 import React from "react";
 import DesktopItem from "./DesktopItem";
+import { User } from "@prisma/client"; // it is coming from PrismaSchema
+import Avatar from "../Avatar";
 
-const DesktopSidebar = () => {
+interface IDesktopSidebarProps {
+  currentUser: User;
+}
+
+const DesktopSidebar: React.FC<IDesktopSidebarProps> = ({ currentUser }) => {
   const routes = useRoutes();
 
+  const [isOpen, setIsOpen] = React.useState(false);
   return (
     <div
       className="hidden lg:fixed lg:inset-y-0 lg:left-0 lg:z-40 lg:w-20 xl:px-6 lg:overflow-y-auto
-      lg:bg-white lg:border-r-[1px] lg:pb-4 lg:flex lg:flex-col justify-betw"
+      lg:bg-white lg:border-r-[1px] lg:pb-4 lg:flex lg:flex-col justify-between"
     >
       <nav className="mt-4 flex flex-col justify-between">
         <ul role="list" className="flex flex-col items-center space-y-1">
@@ -26,6 +33,16 @@ const DesktopSidebar = () => {
             />
           ))}
         </ul>
+      </nav>
+      <nav className="mt-4 flex flex-col justify-between items-center">
+        <div
+          className="cursor-pointer hover:opacity-75 transition"
+          onClick={() => {
+            setIsOpen(true);
+          }}
+        >
+          <Avatar user={currentUser} />
+        </div>
       </nav>
     </div>
   );
