@@ -13,49 +13,30 @@ interface IConversationIdHeaderProps {
     users: User[];
   };
 }
-
 const Header: React.FC<IConversationIdHeaderProps> = ({ conversation }) => {
   const otherUser = useOtherUser(conversation);
+
   const statusText = React.useMemo(() => {
-    if (conversation.isGroup) {
+    if (conversation?.isGroup) {
       return `${conversation.users.length} participants`;
     }
     return 'Active';
   }, [conversation]);
+
   return (
-    <div
-      className='
-    bg-white 
-    w-full 
-    flex 
-    border-b-[1px] 
-    sm:px-4 
-    py-3 
-    px-4 
-    lg:px-6 
-    justify-between 
-    items-center 
-    shadow-sm
-  '
-    >
+    <div className='bg-white w-full flex border-b-[1px] sm:px-4 py-3 px-4 lg:px-6 justify-between items-center shadow-sm'>
       <div className='flex gap-3 items-center'>
         <Link
           href='/conversations'
-          className='
-        lg:hidden 
-        block 
-        text-sk-500 
-        hover:text-sky-600 
-        transition 
-        cursor-pointer
-      '
+          className='lg:hidden block text-sk-500 hover:text-sky-600 transition cursor-pointer'
         >
           <HiChevronLeft size={32} />
         </Link>
 
-        <Avatar user={otherUser} />
+        <Avatar user={otherUser!} />
+
         <div className='flex flex-col'>
-          <div>{conversation.name || otherUser.name}</div>
+          <div>{conversation?.name || otherUser?.name}</div>
           <div className='text-sm font-light text-neutral-500'>
             {statusText}
           </div>
@@ -63,12 +44,7 @@ const Header: React.FC<IConversationIdHeaderProps> = ({ conversation }) => {
       </div>
       <HiEllipsisHorizontal
         size={32}
-        className='
-      text-sky-500
-      cursor-pointer
-      hover:text-sky-600
-      transition
-    '
+        className='text-sky-500 cursor-pointer hover:text-sky-600 transition'
       />
     </div>
   );

@@ -18,7 +18,7 @@ const useOtherUser = (
     const otherUser = conversation?.users.filter(
       (user) => user.email !== currentUSerEmail
     );
-    return otherUser[0];
+    if (otherUser) return otherUser[0];
   }, [session.data?.user?.email, conversation?.users]);
 
   return otherUser;
