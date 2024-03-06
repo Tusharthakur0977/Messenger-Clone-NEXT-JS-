@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import useConversation from "@/app/hooks/useConversation";
-import useRoutes from "@/app/hooks/useRoutes";
-import React from "react";
-import MobileItem from "./MobileItem";
+import useConversation from '@/app/hooks/useConversation';
+import useRoutes from '@/app/hooks/useRoutes';
+import React from 'react';
+import MobileItem from './MobileItem';
 
 const MobileSidebar = () => {
   const routes = useRoutes();
@@ -14,7 +14,7 @@ const MobileSidebar = () => {
   }
 
   return (
-    <div className="fixed justify-between w-full bottom-0 z-40 flex items-center bg-red-400 border-t-[1px] lg:hidden">
+    <div className='fixed justify-between w-full bottom-0 z-40 flex items-center border-t-[1px] lg:hidden'>
       {routes.map((route) => (
         <MobileItem
           key={route.label}

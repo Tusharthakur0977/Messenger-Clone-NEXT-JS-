@@ -1,21 +1,23 @@
-import { useParams } from "next/navigation";
-import React from "react";
+import { useParams } from 'next/navigation';
+import { useMemo } from 'react';
 
 const useConversation = () => {
   const params = useParams();
-  const conversationId = React.useMemo(() => {
-    if (!params?.conversationId) {
-      return "";
+
+  const conversationId = useMemo(() => {
+    if (!params?.conversationid) {
+      return '';
     }
-    return params.conversationId as string;
-  }, [params?.conversationId]);
 
-  const isOpen = React.useMemo(() => !!conversationId, [conversationId]);
+    return params.conversationid as string;
+  }, [params?.conversationid]);
 
-  return React.useMemo(
+  const isOpen = useMemo(() => !!conversationId, [conversationId]);
+
+  return useMemo(
     () => ({
       isOpen,
-      conversationId: conversationId || "",
+      conversationId,
     }),
     [isOpen, conversationId]
   );

@@ -64,12 +64,12 @@ const ConversationCard: React.FC<IConversationBox> = ({ data, selected }) => {
         selected ? 'bg-neutral-100' : 'bg-white'
       )}
     >
-      <Avatar user={otherUser} />
+      <Avatar user={otherUser!} />
       <div className='min-w-0 flex-1'>
         <div className='focus:outline-none '>
           <div className='flex justify-between items-center mb-1'>
             <p className='text-md font-medium text-gray-900'>
-              {data.name || otherUser.name}
+              {data.name || otherUser?.name}
             </p>
             {lastMessage?.createdAt && (
               <p
@@ -89,7 +89,7 @@ const ConversationCard: React.FC<IConversationBox> = ({ data, selected }) => {
               truncate 
               text-sm
               `,
-              hasSeen ? 'text-gray-500' : 'text-black font-medium'
+              hasSeen ? 'text-gray-500' : 'text-black font-bold'
             )}
           >
             {lastMessageText}
